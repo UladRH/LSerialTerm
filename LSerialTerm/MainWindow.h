@@ -11,6 +11,10 @@ public:
 
     ~MainWindow();
 
+private slots:
+
+    void buttonConnectionClicked();
+
 private:
     Ui::MainWindow mUi;
 };
