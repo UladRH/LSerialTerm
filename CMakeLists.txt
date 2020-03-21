@@ -14,14 +14,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Core Widgets Gui SerialPort REQUIRED)
 
 set(HEADER_FILES
-        LSerialTerm/MainWindow.h)
+        LSerialTerm/MainWindow.h
+        LSerialTerm/NewConnectionWindow.h)
 
 set(SOURCE_FILES
         LSerialTerm/Main.cpp
-        LSerialTerm/MainWindow.cpp)
+        LSerialTerm/MainWindow.cpp
+        LSerialTerm/NewConnectionWindow.cpp)
 
 set(UI_FILES
-        LSerialTerm/MainWindow.ui)
+        LSerialTerm/MainWindow.ui
+        LSerialTerm/NewConnectionWindow.ui)
 
 set(RESOURCE_FILES LSerialTerm/Resources.qrc)
 
