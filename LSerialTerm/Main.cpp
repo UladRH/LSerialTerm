@@ -12,8 +12,6 @@ int main(int argc, char *argv[]) {
 
     QApplication qtApp(argc, argv);
 
-    qtApp.setStyle(QStyleFactory::create("Fusion"));
-
     QFile File(":Stylesheet.qss");
     if (File.open(QFile::ReadOnly)) {
         QString StyleSheet = QLatin1String(File.readAll());
