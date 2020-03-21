@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QtSerialPort/QSerialPort>
 
 #include "ui_MainWindow.h"
 
@@ -15,6 +16,9 @@ private slots:
 
     void buttonConnectionClicked();
 
+    void readData();
+
 private:
     Ui::MainWindow mUi;
+    QSerialPort *mPort = nullptr;
 };
