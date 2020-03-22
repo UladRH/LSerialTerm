@@ -15,6 +15,7 @@ void HexConsole::append(QByteArray data, DataDirection direction) {
 
 void HexConsole::showHex(bool show) {
     mShowHex = show;
+    viewport()->update();
 }
 
 void HexConsole::paintEvent(QPaintEvent *event) {

@@ -50,6 +50,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     auto returnShortcut = new QShortcut(QKeySequence("Return"), mUi.centralwidget);
     connect(returnShortcut, SIGNAL(activated()), mUi.buttonSend, SLOT(click()));
+
+    connect(mUi.action_Hex_View, SIGNAL(triggered()), this, SLOT(switchShowHex()));
+    mConsole->showHex(mShowHex);
+    mUi.actionView_Hex->setChecked(mShowHex);
 }
 
 MainWindow::~MainWindow() {}
@@ -95,6 +99,11 @@ void MainWindow::buttonSendClicked() {
         mConsole->append(text.toStdString().c_str(), HexConsole::DataDirection::Out);
         mUi.editSend->clear();
     }
+}
+
+void MainWindow::switchShowHex() {
+    mShowHex = !mShowHex;
+    mConsole->showHex(mShowHex);
 }
 
 void MainWindow::readData() {

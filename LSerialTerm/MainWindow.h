@@ -19,10 +19,13 @@ private slots:
 
     void buttonSendClicked();
 
+    void switchShowHex();
+
     void readData();
 
 private:
     Ui::MainWindow mUi;
     QSerialPort *mPort = nullptr;
     HexConsole *mConsole = nullptr;
+    bool mShowHex = false;
 };
