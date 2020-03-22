@@ -87,16 +87,6 @@
       </item>
      </layout>
     </item>
-    <item>
-     <widget class="QPlainTextEdit" name="outputTerminal">
-      <property name="font">
-       <font>
-        <family>Consolas</family>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -8,19 +8,21 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Core Widgets Gui SerialPort REQUIRED)
 
 set(HEADER_FILES
         LSerialTerm/MainWindow.h
-        LSerialTerm/NewConnectionWindow.h)
+        LSerialTerm/NewConnectionWindow.h
+        LSerialTerm/HexConsole.h)
 
 set(SOURCE_FILES
         LSerialTerm/Main.cpp
         LSerialTerm/MainWindow.cpp
-        LSerialTerm/NewConnectionWindow.cpp)
+        LSerialTerm/NewConnectionWindow.cpp
+        LSerialTerm/HexConsole.cpp)
 
 set(UI_FILES
         LSerialTerm/MainWindow.ui

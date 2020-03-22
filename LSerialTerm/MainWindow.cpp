@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "NewConnectionWindow.h"
+#include "HexConsole.h"
 
 #include <QtSerialPort/QSerialPortInfo>
 #include <QDebug>
@@ -39,6 +40,9 @@ inline QString _getStopBitsStr(QSerialPort::StopBits stopBits) {
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     mUi.setupUi(this);
     mPort = new QSerialPort(this);
+    mConsole = new HexConsole(this);
+
+    mUi.verticalLayout->addWidget(mConsole);
 
     connect(mUi.buttonConnection, SIGNAL (clicked()), this, SLOT (buttonConnectionClicked()));
     connect(mPort, SIGNAL (readyRead()), this, SLOT (readData()));
@@ -57,12 +61,12 @@ void MainWindow::buttonConnectionClicked() {
     QSerialPortInfo portInfo(port);
 
     mUi.buttonConnection->setText(QString("%1 \n\r %2 • %3 baud • %4 bits • %5 • %6").arg(
-            portInfo.description(),
-            dialog.getPort(),
-            QString::number(dialog.getBaudRate()),
-            QString::number(dialog.getDataBits()),
-            _getParityStr(dialog.getParity()),
-            _getStopBitsStr(dialog.getStopBits())
+        portInfo.description(),
+        dialog.getPort(),
+        QString::number(dialog.getBaudRate()),
+        QString::number(dialog.getDataBits()),
+        _getParityStr(dialog.getParity()),
+        _getStopBitsStr(dialog.getStopBits())
     ));
 
     if (mPort->isOpen()) {
@@ -80,5 +84,5 @@ void MainWindow::buttonConnectionClicked() {
 
 void MainWindow::readData() {
     QByteArray data = mPort->readAll();
-    mUi.outputTerminal->appendPlainText(data);
+    mConsole->append(data, HexConsole::DataDirection::In);
 }
