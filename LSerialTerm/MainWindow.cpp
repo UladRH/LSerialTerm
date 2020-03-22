@@ -4,7 +4,7 @@
 #include "HexConsole.h"
 
 #include <QtSerialPort/QSerialPortInfo>
-#include <QDebug>
+#include <QShortcut>
 
 inline QString _getParityStr(QSerialPort::Parity parity) {
     switch (parity) {
@@ -42,10 +42,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     mPort = new QSerialPort(this);
     mConsole = new HexConsole(this);
 
-    mUi.verticalLayout->addWidget(mConsole);
+    mUi.verticalLayout->insertWidget(1, mConsole);
 
     connect(mUi.buttonConnection, SIGNAL (clicked()), this, SLOT (buttonConnectionClicked()));
+    connect(mUi.buttonSend, SIGNAL (clicked()), this, SLOT (buttonSendClicked()));
     connect(mPort, SIGNAL (readyRead()), this, SLOT (readData()));
+
+    auto returnShortcut = new QShortcut(QKeySequence("Return"), mUi.centralwidget);
+    connect(returnShortcut, SIGNAL(activated()), mUi.buttonSend, SLOT(click()));
 }
 
 MainWindow::~MainWindow() {}
@@ -80,6 +84,17 @@ void MainWindow::buttonConnectionClicked() {
     mPort->setStopBits(static_cast<QSerialPort::StopBits>(dialog.getDataBits()));
 
     mPort->open(QIODevice::ReadWrite);
+}
+
+void MainWindow::buttonSendClicked() {
+    auto text = mUi.editSend->text();
+
+    if (text.length() > 0 && mPort->isOpen()) {
+        text += '\n';
+        mPort->write(text.toStdString().c_str());
+        mConsole->append(text.toStdString().c_str(), HexConsole::DataDirection::Out);
+        mUi.editSend->clear();
+    }
 }
 
 void MainWindow::readData() {

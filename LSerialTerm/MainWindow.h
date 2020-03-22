@@ -17,6 +17,8 @@ private slots:
 
     void buttonConnectionClicked();
 
+    void buttonSendClicked();
+
     void readData();
 
 private:
