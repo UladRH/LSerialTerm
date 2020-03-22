@@ -13,6 +13,10 @@ void HexConsole::append(QByteArray data, DataDirection direction) {
     viewport()->update();
 }
 
+void HexConsole::showHex(bool show) {
+    mShowHex = show;
+}
+
 void HexConsole::paintEvent(QPaintEvent *event) {
     QPainter painter(viewport());
 
@@ -20,7 +24,9 @@ void HexConsole::paintEvent(QPaintEvent *event) {
         charW = fontMetrics().maxWidth() / 2;
 
     int totalChars = (width() - 40) / charW,
-        chars = (totalChars - (totalChars / 4)) / 3;
+        chars = mShowHex
+                ? ((totalChars - (totalChars / 4)) / 3)
+                : (totalChars + 1);
 
     int div = 20 + chars * charW,
         linePad = charH / 4;
@@ -42,13 +48,18 @@ void HexConsole::paintEvent(QPaintEvent *event) {
             int yCord = linePad + charH + yOffset - linePad * 2;
 
             painter.drawText(10, yCord, mData[i].data.mid(offset, chars).toStdString().c_str());
-            painter.drawText(div + 10, yCord, mData[i].data.mid(offset, chars).toHex(' ').toUpper());
+
+            if (mShowHex) {
+                painter.drawText(div + 10, yCord, mData[i].data.mid(offset, chars).toHex(' ').toUpper());
+            }
 
             yOffset += charH;
         }
         yOffset += linePad;
     }
 
-    painter.setPen(Qt::gray);
-    painter.drawLine(div, event->rect().top(), div, height());
+    if (mShowHex) {
+        painter.setPen(Qt::gray);
+        painter.drawLine(div, event->rect().top(), div, height());
+    }
 }

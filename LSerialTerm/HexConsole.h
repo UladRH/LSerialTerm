@@ -20,9 +20,12 @@ public:
 
     void append(QByteArray data, DataDirection direction);
 
+    void showHex(bool show);
+
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
     QList<HexConsoleChunk> mData;
+    bool mShowHex = false;
 };
