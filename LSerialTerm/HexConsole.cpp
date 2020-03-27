@@ -32,7 +32,18 @@ void HexConsole::paintEvent(QPaintEvent *event) {
     int div = 20 + chars * charW,
         linePad = charH / 4;
 
-    int yOffset = 0;
+    int linesHeight = 0;
+    for (auto &i : mData) {
+        linesHeight += int(ceil(double(i.data.size()) / chars) * charH + linePad);
+    }
+    linesHeight /= charH;
+    linesHeight -= height() / charH;
+
+    verticalScrollBar()->setRange(0, linesHeight);
+
+    int pxOfsX = verticalScrollBar()->value() * charH;
+
+    int yOffset = -pxOfsX;
 
     painter.fillRect(event->rect(), viewport()->palette().color(QPalette::Base));
 
