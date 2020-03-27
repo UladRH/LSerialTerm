@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QScrollBar>
+#include <QDebug>
 
 HexConsole::HexConsole(QWidget *parent) : QAbstractScrollArea(parent) {
     setFont(QFont("Consolas", 11));
@@ -32,22 +33,44 @@ void HexConsole::paintEvent(QPaintEvent *event) {
     int div = 20 + chars * charW,
         linePad = charH / 4;
 
+    int pxOfsX = verticalScrollBar()->value() * charH;
+
+    int fromDl = 0,
+        fromDlOffset = 0,
+        toDl = mData.size();
+
     int linesHeight = 0;
     for (auto &i : mData) {
-        linesHeight += int(ceil(double(i.data.size()) / chars) * charH + linePad);
+        int dlHeight = int(ceil(double(i.data.size()) / chars) * charH + linePad);
+
+        if (linesHeight < pxOfsX) {
+            fromDl++;
+            fromDlOffset += dlHeight;
+        }
+
+        if (linesHeight > pxOfsX + height()) {
+            toDl--;
+        }
+
+        linesHeight += dlHeight;
     }
     linesHeight /= charH;
     linesHeight -= height() / charH;
 
+    if (fromDl > 0) {
+        fromDl--;
+        fromDlOffset -= int(ceil(double(mData[fromDl].data.size()) / chars) * charH + linePad);
+    }
+
     verticalScrollBar()->setRange(0, linesHeight);
 
-    int pxOfsX = verticalScrollBar()->value() * charH;
+    int yOffset = -pxOfsX + fromDlOffset;
 
-    int yOffset = -pxOfsX;
+    qDebug() << fromDl << toDl;
 
     painter.fillRect(event->rect(), viewport()->palette().color(QPalette::Base));
 
-    for (int i = 0; i < mData.size(); ++i) {
+    for (int i = fromDl; i < toDl; ++i) {
         QColor bgColor = viewport()->palette().color(QPalette::Base);
         if (mData[i].dir == DataDirection::In) {
             bgColor = QColor(232, 255, 232);
