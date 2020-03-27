@@ -1,0 +1,36 @@
+image: Visual Studio 2019
+
+version: "{build}-{branch}"
+
+clone_depth: 1
+
+environment:
+  matrix:
+    - name: Windows_x86
+      arch: win32
+      qt: msvc2017
+      sarch: x86
+
+    - name: Windows_x64
+      arch: x64
+      qt: msvc2017_64
+      sarch: x64
+
+init:
+  - set PATH=C:\Qt\5.14\%qt%\bin;%PATH%
+  - set Qt5_DIR=C:\Qt\5.14\%qt%\\lib\cmake\Qt5
+  - set QTIFWDIR=C:\Qt\Tools\QtInstallerFramework\3.2
+
+build_script:
+  - cmake -G "Visual Studio 16 2019" -A %arch% -B build
+  - cmake --build build --config Release
+  - cmake --install build --prefix install --config Release
+  - cmake --build build --target PACKAGE --config Release
+  - cd build && 7z a ../LSerialTerm_Installer_Windows_%sarch%_%APPVEYOR_BUILD_NUMBER%.zip LSerialTerm_Installer_Windows_%sarch%.exe
+
+artifacts:
+  - path: install/
+    name: LSerialTerm_Portable_Windows_$(sarch)_$(APPVEYOR_BUILD_NUMBER)
+
+  - path: LSerialTerm_Installer_Windows_$(sarch)_$(APPVEYOR_BUILD_NUMBER).zip
+    name: LSerialTerm_Installer_Windows_$(sarch)_$(APPVEYOR_BUILD_NUMBER)
