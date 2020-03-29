@@ -5,6 +5,8 @@
 #include <QScrollBar>
 #include <QDebug>
 
+// TODO: Cleanup
+
 HexConsole::HexConsole(QWidget *parent) : QAbstractScrollArea(parent) {
     setFont(QFont("Consolas", 11));
 }
@@ -62,7 +64,12 @@ void HexConsole::paintEvent(QPaintEvent *event) {
         fromDlOffset -= int(ceil(double(mData[fromDl].data.size()) / chars) * charH + linePad);
     }
 
-    verticalScrollBar()->setRange(0, linesHeight);
+    if (verticalScrollBar()->value() == verticalScrollBar()->maximum()) {
+        verticalScrollBar()->setRange(0, linesHeight);
+        verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+    } else {
+        verticalScrollBar()->setRange(0, linesHeight);
+    }
 
     int yOffset = -pxOfsX + fromDlOffset;
 
