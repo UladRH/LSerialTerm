@@ -3,17 +3,15 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QScrollBar>
-#include <QDebug>
+#include <utility>
 
 // TODO: Cleanup
 
-HexConsole::HexConsole(QWidget *parent) : QAbstractScrollArea(parent) {
+HexConsole::HexConsole(QList<TerminalManager::Message> *data, bool showHex, QWidget *parent)
+    : QAbstractScrollArea(parent) {
     setFont(QFont("Consolas", 11));
-}
-
-void HexConsole::append(QByteArray data, DataDirection direction) {
-    mData.append(HexConsoleChunk{.data = data, .dir = direction});
-    viewport()->update();
+    mShowHex = showHex;
+    mData = data;
 }
 
 void HexConsole::showHex(bool show) {
@@ -39,10 +37,10 @@ void HexConsole::paintEvent(QPaintEvent *event) {
 
     int fromDl = 0,
         fromDlOffset = 0,
-        toDl = mData.size();
+        toDl = mData->size();
 
     int linesHeight = 0;
-    for (auto &i : mData) {
+    for (auto &i : *mData) {
         int dlHeight = int(ceil(double(i.data.size()) / chars) * charH + linePad);
 
         if (linesHeight < pxOfsX) {
@@ -61,7 +59,7 @@ void HexConsole::paintEvent(QPaintEvent *event) {
 
     if (fromDl > 0) {
         fromDl--;
-        fromDlOffset -= int(ceil(double(mData[fromDl].data.size()) / chars) * charH + linePad);
+        fromDlOffset -= int(ceil(double(mData->at(fromDl).data.size()) / chars) * charH + linePad);
     }
 
     if (verticalScrollBar()->value() == verticalScrollBar()->maximum()) {
@@ -73,26 +71,24 @@ void HexConsole::paintEvent(QPaintEvent *event) {
 
     int yOffset = -pxOfsX + fromDlOffset;
 
-    qDebug() << fromDl << toDl;
-
     painter.fillRect(event->rect(), viewport()->palette().color(QPalette::Base));
 
     for (int i = fromDl; i < toDl; ++i) {
         QColor bgColor = viewport()->palette().color(QPalette::Base);
-        if (mData[i].dir == DataDirection::In) {
+        if (mData->at(i).direction == TerminalManager::In) {
             bgColor = QColor(232, 255, 232);
-        } else if (mData[i].dir == DataDirection::Out) {
+        } else if (mData->at(i).direction == TerminalManager::Out) {
             bgColor = QColor(255, 232, 232);
         }
 
-        for (int offset = 0; offset < mData[i].data.size(); offset += chars) {
+        for (int offset = 0; offset < mData->at(i).data.size(); offset += chars) {
             painter.fillRect(QRect(0, yOffset, event->rect().width(), charH), bgColor);
             int yCord = linePad + charH + yOffset - linePad * 2;
 
-            painter.drawText(10, yCord, mData[i].data.mid(offset, chars).toStdString().c_str());
+            painter.drawText(10, yCord, mData->at(i).data.mid(offset, chars).toStdString().c_str());
 
             if (mShowHex) {
-                painter.drawText(div + 10, yCord, mData[i].data.mid(offset, chars).toHex(' ').toUpper());
+                painter.drawText(div + 10, yCord, mData->at(i).data.mid(offset, chars).toHex(' ').toUpper());
             }
 
             yOffset += charH;

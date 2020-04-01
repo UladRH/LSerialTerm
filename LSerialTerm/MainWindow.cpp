@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "NewConnectionWindow.h"
-#include "HexConsole.h"
 
 #include <QtSerialPort/QSerialPortInfo>
 #include <QShortcut>
@@ -40,7 +39,7 @@ inline QString _getStopBitsStr(QSerialPort::StopBits stopBits) {
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     mUi.setupUi(this);
     mPort = new QSerialPort(this);
-    mConsole = new HexConsole(this);
+    mConsole = new TerminalManager(this);
 
     mUi.verticalLayout->insertWidget(1, mConsole);
 
@@ -52,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     connect(returnShortcut, SIGNAL(activated()), mUi.buttonSend, SLOT(click()));
 
     connect(mUi.action_Hex_View, SIGNAL(triggered()), this, SLOT(switchShowHex()));
-    mConsole->showHex(mShowHex);
     mUi.actionView_Hex->setChecked(mShowHex);
 }
 
@@ -96,17 +94,22 @@ void MainWindow::buttonSendClicked() {
     if (text.length() > 0 && mPort->isOpen()) {
         text += '\n';
         mPort->write(text.toStdString().c_str());
-        mConsole->append(text.toStdString().c_str(), HexConsole::DataDirection::Out);
+        mConsole->append(TerminalManager::Out, text.toStdString().c_str());
         mUi.editSend->clear();
     }
 }
 
 void MainWindow::switchShowHex() {
     mShowHex = !mShowHex;
-    mConsole->showHex(mShowHex);
+
+    if (mShowHex) {
+        mConsole->changeView(TerminalManager::HexLog);
+    } else {
+        mConsole->changeView(TerminalManager::Log);
+    }
 }
 
 void MainWindow::readData() {
     QByteArray data = mPort->readAll();
-    mConsole->append(data, HexConsole::DataDirection::In);
+    mConsole->append(TerminalManager::In, data);
 }

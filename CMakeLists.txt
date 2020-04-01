@@ -17,13 +17,15 @@ set(QTDIR ${Qt5_DIR}/../../..)
 set(HEADER_FILES
     LSerialTerm/MainWindow.h
     LSerialTerm/NewConnectionWindow.h
-    LSerialTerm/HexConsole.h)
+    LSerialTerm/Widgets/HexConsole.h
+    LSerialTerm/Widgets/TerminalManager.hpp)
 
 set(SOURCE_FILES
     LSerialTerm/Main.cpp
     LSerialTerm/MainWindow.cpp
     LSerialTerm/NewConnectionWindow.cpp
-    LSerialTerm/HexConsole.cpp)
+    LSerialTerm/Widgets/HexConsole.cpp
+    LSerialTerm/Widgets/TerminalManager.cpp)
 
 set(UI_FILES
     LSerialTerm/MainWindow.ui

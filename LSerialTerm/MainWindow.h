@@ -2,9 +2,9 @@
 
 #include <QMainWindow>
 #include <QtSerialPort/QSerialPort>
+#include <LSerialTerm/Widgets/TerminalManager.hpp>
 
 #include "ui_MainWindow.h"
-#include "HexConsole.h"
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
@@ -26,6 +26,6 @@ private slots:
 private:
     Ui::MainWindow mUi;
     QSerialPort *mPort = nullptr;
-    HexConsole *mConsole = nullptr;
+    TerminalManager *mConsole = nullptr;
     bool mShowHex = false;
 };
