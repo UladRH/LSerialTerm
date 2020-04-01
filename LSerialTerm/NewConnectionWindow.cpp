@@ -6,6 +6,8 @@
 NewConnectionWindow::NewConnectionWindow(QWidget *parent) : QDialog(parent) {
     mUi.setupUi(this);
 
+    setFont(QFont("Segoe UI", 12));
+
     connect(mUi.buttonConnect, SIGNAL (clicked()), this, SLOT (buttonConnectClicked()));
 
     mPorts = QSerialPortInfo::availablePorts();

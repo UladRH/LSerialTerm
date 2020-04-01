@@ -50,8 +50,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     auto returnShortcut = new QShortcut(QKeySequence("Return"), mUi.centralwidget);
     connect(returnShortcut, SIGNAL(activated()), mUi.buttonSend, SLOT(click()));
 
-    connect(mUi.action_Hex_View, SIGNAL(triggered()), this, SLOT(switchShowHex()));
-    mUi.actionView_Hex->setChecked(mShowHex);
+    connect(mUi.action_Exit, SIGNAL(triggered()), this, SLOT(close()));
+
+    connect(mUi.action_Hex_Mode, SIGNAL(triggered()), this, SLOT(switchShowHex()));
+    mUi.action_Hex_Mode->setChecked(mShowHex);
+
+    setFont(QFont("Segoe UI", 12));
+
+    mUi.menuBar->setFont(QFont("Segoe UI", 11));
+    mUi.action_Hex_Mode->setFont(QFont("Segoe UI", 11));
+    mUi.action_Exit->setFont(QFont("Segoe UI", 11));
+
+    mUi.editSend->setFont(QFont("Consolas", 12));
 }
 
 MainWindow::~MainWindow() {}

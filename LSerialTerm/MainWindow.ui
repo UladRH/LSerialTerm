@@ -10,21 +10,21 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LSerialTerm</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
-       <widget class="QPushButton" name="buttonPlay">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QPushButton" name="buttonConnection">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -33,52 +33,9 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>70</width>
-          <height>70</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>70</height>
-         </size>
-        </property>
-        <property name="sizeIncrement">
-         <size>
           <width>0</width>
-          <height>0</height>
+          <height>50</height>
          </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="buttonConnection">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>2000</width>
-          <height>70</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>14</pointsize>
-         </font>
         </property>
         <property name="text">
          <string>Select Connection</string>
@@ -97,19 +54,13 @@
         <property name="text">
          <string>Send</string>
         </property>
-        <property name="autoDefault">
-         <bool>true</bool>
-        </property>
-        <property name="default">
-         <bool>true</bool>
-        </property>
        </widget>
       </item>
      </layout>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -122,47 +73,28 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-   </widget>
-   <widget class="QMenu" name="menu_Edit">
-    <property name="title">
-     <string>&amp;Edit</string>
-    </property>
+    <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="action_Hex_View"/>
+    <addaction name="action_Hex_Mode"/>
    </widget>
    <addaction name="menu_File"/>
-   <addaction name="menu_Edit"/>
    <addaction name="menu_View"/>
   </widget>
-  <action name="actionView_Hex">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
+  <action name="action_Exit">
    <property name="text">
-    <string>View Hex</string>
+    <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="actionShow_Hex">
+  <action name="action_Hex_Mode">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show Hex</string>
-   </property>
-  </action>
-  <action name="action_Hex_View">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Hex View</string>
+    <string>&amp;Hex Mode</string>
    </property>
   </action>
  </widget>
