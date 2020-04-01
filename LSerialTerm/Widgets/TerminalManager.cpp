@@ -42,3 +42,8 @@ void TerminalManager::append(TerminalManager::MessageDirection direction, QByteA
     mMsgs.append(Message{std::move(data), direction});
     mCurrentView->viewport()->update();
 }
+
+void TerminalManager::clear() {
+    mMsgs.clear();
+    mCurrentView->viewport()->update();
+}

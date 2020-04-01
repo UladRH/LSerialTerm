@@ -30,6 +30,8 @@ public:
 
     void append(MessageDirection direction, QByteArray data);
 
+    void clear();
+
 private:
     QList<Message> mMsgs;
 

@@ -35,7 +35,6 @@ inline QString _getStopBitsStr(QSerialPort::StopBits stopBits) {
     return QString("");
 }
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     mUi.setupUi(this);
     mPort = new QSerialPort(this);
@@ -55,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     connect(mUi.action_Hex_Mode, SIGNAL(triggered()), this, SLOT(switchShowHex()));
     mUi.action_Hex_Mode->setChecked(mShowHex);
 
+    mUi.buttonConnection->setText("Create Connection");
+
     setFont(QFont("Segoe UI", 12));
 
     mUi.menuBar->setFont(QFont("Segoe UI", 11));
@@ -67,6 +68,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 MainWindow::~MainWindow() {}
 
 void MainWindow::buttonConnectionClicked() {
+    if (mPort->isOpen()) {
+        mPort->close();
+        mUi.buttonConnection->setText("Create Connection");
+        mConsole->clear();
+
+        return;
+    }
+
     auto dialog = NewConnectionWindow(this);
 
     if (dialog.exec() != QDialog::DialogCode::Accepted) {
@@ -84,10 +93,6 @@ void MainWindow::buttonConnectionClicked() {
         _getParityStr(dialog.getParity()),
         _getStopBitsStr(dialog.getStopBits())
     ));
-
-    if (mPort->isOpen()) {
-        mPort->close();
-    }
 
     mPort->setPortName(port.portName());
     mPort->setBaudRate(dialog.getBaudRate());
