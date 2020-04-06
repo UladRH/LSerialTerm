@@ -71,7 +71,6 @@ void MainWindow::buttonConnectionClicked() {
     if (mPort->isOpen()) {
         mPort->close();
         mUi.buttonConnection->setText("Create Connection");
-        mConsole->clear();
 
         return;
     }
@@ -93,6 +92,8 @@ void MainWindow::buttonConnectionClicked() {
         _getParityStr(dialog.getParity()),
         _getStopBitsStr(dialog.getStopBits())
     ));
+
+    mConsole->clear();
 
     mPort->setPortName(port.portName());
     mPort->setBaudRate(dialog.getBaudRate());
